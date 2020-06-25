@@ -1,0 +1,172 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Swagger Recipes",
+        "description": "This is a Recipes sample server. For this sample, you can use the api key `special-key` to test the authorization filters.",
+        "version": "1.0.0"
+    },
+    "tags": [
+        {
+            "name": "recipe",
+            "description": "Links to your favorite recipes"
+        }
+    ],
+    "servers": [
+        {
+            "url": "http://localhost:3000/api"
+        }
+    ],
+    "components": {
+        "schemas": {
+            "Recipe": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "link": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "Id": {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "description": "The recipe ID"
+                }
+            }
+        }
+    },
+    "paths": {
+        "/recipes": {
+            "get": {
+                "tags": [
+                    "recipe"
+                ],
+                "summary": "Returns a list of recipes",
+                "operationId": "findAll",
+                "responses": {
+                    "200": {
+                        "description": "A json array of recipes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Recipe"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "recipe"
+                ],
+                "summary": "Add a new recipe to the database",
+                "operationId": "create",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Recipe"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                }
+            }
+        },
+        "/recipes/{id}": {
+            "put": {
+                "tags": [
+                    "recipe"
+                ],
+                "summary": "Update an existing recipe",
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Id"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Recipe"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "Recipe not found"
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "recipe"
+                ],
+                "summary": "Returns a recipe by ID",
+                "operationId": "findById",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A recipe object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Recipe"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Recipe not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "recipe"
+                ],
+                "summary": "Removes a recipe by ID",
+                "operationId": "remove",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    }
+}
